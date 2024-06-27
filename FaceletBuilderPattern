@@ -1,0 +1,101 @@
+class Person:CustomStringConvertible {
+    
+    // address
+    var streetName:String = ""
+    var city:String = ""
+    var postalCode:String = ""
+    
+    // employment
+    var annualIncome:Int = 0
+    var workLocation:String = ""
+    var companyName:String = ""
+    
+    var description: String {
+        return "I Lived at \(streetName) and city :\(city) and postalcode also \(postalCode). My Work location is \(workLocation) at company name \(companyName) and earned \(annualIncome)"
+    }
+}
+
+class PersonBuilder {
+    
+    var person = Person()
+    
+    var lives:PersonAddressBuilder {
+        return PersonAddressBuilder(person: person)
+    }
+    
+    var work:PersonJobBuilder {
+        return PersonJobBuilder(person: person)
+    }
+    
+    func buildPerson() -> Person {
+        return self.person
+    }
+}
+
+class PersonJobBuilder:PersonBuilder {
+    
+    internal init(person:Person) {
+        super.init()
+        self.person = person
+    }
+    
+    func at(companyName:String) -> PersonJobBuilder {
+        self.person.companyName = companyName
+        return self
+    }
+    
+    func atAnnualIncome(income:Int) -> PersonJobBuilder {
+        self.person.annualIncome = income
+        return self
+    }
+    
+    func atWorkLocation(location:String) -> PersonJobBuilder {
+        self.person.workLocation = location
+        return self
+    }
+}
+
+
+
+class PersonAddressBuilder:PersonBuilder {
+  
+    
+    internal init(person:Person) {
+        super.init()
+        self.person = person
+    }
+    
+    func atStreetName(streetName:String) -> PersonAddressBuilder {
+        self.person.streetName = streetName
+        return self
+    }
+    
+    func atCity(city:String) -> PersonAddressBuilder {
+        self.person.city = city
+        return self
+    }
+    
+    func atPostalCode(postalCode:String) -> PersonAddressBuilder {
+        self.person.postalCode = postalCode
+        return self
+    }
+}
+
+
+
+var personBuilder = PersonBuilder()
+
+    .lives
+    .atCity(city: "Paramakudi")
+    .atPostalCode(postalCode: "623707")
+    .atStreetName(streetName: "VasanthaPuram Street")
+
+    .work
+    .at(companyName: "Siam Computing")
+    .atAnnualIncome(income: 1000000)
+    .atWorkLocation(location: "Chennai")
+    .buildPerson()
+
+print(personBuilder.description)
+
+
